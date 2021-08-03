@@ -8,9 +8,12 @@ function App() {
   const reverseClass = reverse ? 'reverse' : '';
   //
   const handleClick = () => {
-    setReverse(!reverse);
+    setReverse((reverse) => !reverse);
   };
 
+  const handleIncrement = () => {
+    setCount((c) => c + 10);
+  };
   return (
     <div className="App">
       <header className="App-header">
@@ -19,7 +22,7 @@ function App() {
         <h1>Contador {count}</h1>
 
         <div>
-          <button type="button" onClick={() => setCount(count + 10)}>
+          <button type="button" onClick={handleIncrement}>
             +10
           </button>
           <button type="button" onClick={() => setCount(count - 10)}>
