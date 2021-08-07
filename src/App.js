@@ -1,39 +1,33 @@
-import logo from './logo.svg';
+/* eslint-disable no-unused-vars */
 import './App.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 function App() {
-  const [reverse, setReverse] = useState();
-  const [count, setCount] = useState(0);
-  const reverseClass = reverse ? 'reverse' : '';
-  //
-  const handleClick = () => {
-    setReverse((reverse) => !reverse);
-  };
+  const [counter, setCounter] = useState(0);
+  const [counter2, setCounter2] = useState(0);
 
-  const handleIncrement = () => {
-    setCount((c) => c + 10);
-  };
+  useEffect(() => {
+    console.log('Executa sempre que o componente atualiza');
+  });
+
+  useEffect(() => {
+    console.log('Executa apenas uma vez');
+  }, []);
+
+  useEffect(() => {
+    console.log('Executa toda vez que a dependência mudar');
+  }, [counter]);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className={`App-logo ${reverseClass}`} alt="logo" />
-
-        <h1>Contador {count}</h1>
-
-        <div>
-          <button type="button" onClick={handleIncrement}>
-            +10
-          </button>
-          <button type="button" onClick={() => setCount(count - 10)}>
-            -10
-          </button>
-        </div>
-
-        <button type="button" onClick={handleClick}>
-          Reverse
-        </button>
-      </header>
+      <h1>Contador1: {counter}</h1>
+      <h1>Contador2: {counter2}</h1>
+      <button type="button" onClick={() => setCounter(counter + 1)}>
+        +
+      </button>
+      <button type="button" onClick={() => setCounter2(counter2 + 1)}>
+        + Counter2
+      </button>
     </div>
   );
 }
