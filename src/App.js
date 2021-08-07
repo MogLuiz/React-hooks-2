@@ -2,16 +2,25 @@
 import './App.css';
 import { useState, useEffect } from 'react';
 
+const eventFn = () => {
+  console.log('h1 clicado');
+};
+
 function App() {
   const [counter, setCounter] = useState(0);
   const [counter2, setCounter2] = useState(0);
 
-  useEffect(() => {
-    console.log('Executa sempre que o componente atualiza');
-  });
+  // useEffect(() => {
+  //   console.log('Executa sempre que o componenteß atualiza');
+  // });
 
+  // Executa apenas 1x
   useEffect(() => {
-    console.log('Executa apenas uma vez');
+    document.querySelector('h1')?.addEventListener('click', eventFn);
+
+    return () => {
+      document.querySelector('h1')?.removeEventListener('click', eventFn); // Removendo lixo do efeito anterior
+    };
   }, []);
 
   useEffect(() => {
@@ -20,6 +29,7 @@ function App() {
 
   return (
     <div className="App">
+      <p>aasass</p>
       <h1>Contador1: {counter}</h1>
       <h1>Contador2: {counter2}</h1>
       <button type="button" onClick={() => setCounter(counter + 1)}>
