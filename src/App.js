@@ -1,34 +1,56 @@
 /* eslint-disable no-unused-vars */
 import P from 'prop-types';
+import { useEffect, useMemo, useState } from 'react';
 import './App.css';
-import React, { useCallback, useMemo, useState } from 'react';
 
-const Button = ({ incrementButton }) => {
-  console.log('Eu também estou renderizando');
-  return <button onClick={() => incrementButton(10)}>+</button>;
+const Post = ({ post }) => {
+  console.log('O filho renderizou');
+  return (
+    <div key={post.id} className="post">
+      <h1>{post.title}</h1>
+      <p>{post.body}</p>
+    </div>
+  );
 };
 
-Button.propTypes = {
-  incrementButton: P.func,
+Post.propTypes = {
+  post: P.shape({
+    id: P.number,
+    title: P.string,
+    body: P.string,
+  }),
 };
 
 function App() {
-  const [counter, setCounter] = useState(0);
+  const [posts, setPosts] = useState([]);
+  const [value, setValue] = useState('');
 
-  const incrementCounter = useCallback((num) => {
-    setCounter((c) => c + num);
+  console.log('Pai renderizou');
+
+  useEffect(() => {
+    setTimeout(() => {
+      fetch('https://jsonplaceholder.typicode.com/posts')
+        .then((r) => r.json())
+        .then((r) => setPosts(r));
+    }, 5000);
   }, []);
 
-  console.log('Estou renderizando outra vez');
-
-  const btn = useMemo(() => {
-    return <Button incrementButton={incrementCounter} />;
-  }, [incrementCounter]);
-
   return (
-    <div className="App">
-      <h1>Contador1: {counter}</h1>
-      {btn}
+    <div className="app">
+      <p>
+        <input type="search" value={value} onChange={(e) => setValue(e.target.value)} />
+      </p>
+
+      {useMemo(() => {
+        return (
+          posts.length > 0 &&
+          posts.map((post) => {
+            return <Post key={post.id} post={post} />;
+          })
+        );
+      }, [posts])}
+
+      {posts.length <= 0 && <p>Estamos buscando novos posts!</p>}
     </div>
   );
 }
